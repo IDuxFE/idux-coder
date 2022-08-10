@@ -5,7 +5,7 @@ import { access } from 'fs/promises';
 
 const nodeModulesName = 'node_modules';
 
-export const resovlePkgFloder = async (pkgName: string[]) => {
+export const resolvePkgFolder = async (pkgName: string[]) => {
   let nodeModulesPath = getConfiguration().get<string>('PackageLocation')!;
   if (nodeModulesPath === '') {
     nodeModulesPath = join((await getWorkspaceFolder())!, nodeModulesName);

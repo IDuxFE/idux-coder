@@ -1,5 +1,5 @@
 import { configuration, getConfiguration } from './config';
 import { findTagName, findProp } from './editor';
-import { resovlePkgFloder } from './pkg';
+import { resolvePkgFolder } from './pkg';
 
-export { findTagName, findProp, configuration, getConfiguration, resovlePkgFloder };
+export { findTagName, findProp, configuration, getConfiguration, resolvePkgFolder};
