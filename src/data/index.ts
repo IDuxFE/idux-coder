@@ -1,12 +1,10 @@
 import { readFile } from 'fs/promises';
 import { MarkdownString, Uri } from 'vscode';
-import { getConfiguration, resovlePkgFloder } from '../utils';
+import { getConfiguration, resolvePkgFolder } from '../utils';
 const mergeObject = require('lodash.merge');
 const forIn = require('lodash.forin');
 
 export const apiMap: any = {};
-let baseURI: Uri;
-
 export const initAPIMap = async () => {
   await mergeProjectAPIs();
   await mergeCustomAPIs();
@@ -14,31 +12,36 @@ export const initAPIMap = async () => {
 };
 
 const convertToMarkdown = () => {
-  baseURI = Uri.parse(getConfiguration().get('BaseURL', ''));
+  const baseURL = getConfiguration().get('BaseURL', '');
+  const baseURI = Uri.parse(baseURL);
 
   forIn(apiMap, (comp: any) => {
     forIn(comp, (lang: any) => {
-      lang.raw = configureMarkdown(lang.raw);
+      lang.raw = configureMarkdown(lang.raw, baseURI);
       forIn(lang, (type: any) => {
-        forIn(type, (prop: any, key: any) => {
-          type[key] = configureMarkdown(dataMarkdown(prop));
-        });
+        // fix path problem
+        if (type && typeof type === 'object') {
+          forIn(type, (prop: any, key: string) => {
+            type[key] = configureMarkdown(dataMarkdown(prop), Uri.parse(`${baseURL}/${lang.path ?? ''}`));
+          });
+        }
       });
     });
   });
 };
 
-const configureMarkdown = (markdown: string) => {
+const configureMarkdown = (markdown: string, baseUri: Uri) => {
   const markdownWrapper = new MarkdownString(markdown);
   markdownWrapper.supportHtml = true;
   markdownWrapper.supportThemeIcons = true;
-  markdownWrapper.baseUri = baseURI;
+  markdownWrapper.isTrusted = true;
+  markdownWrapper.baseUri = baseUri;
   return markdownWrapper;
 };
 
 const dataWrapper = (data: string, tag: string) => (data !== '-' ? `*@${tag}*: ${data}\n\n` : '');
 
-const dataMarkdown = (data: { description: any; type: string; default: string; globalConfig: string }) =>
+const dataMarkdown = (data: { description: string; type: string; default: string; globalConfig: string }) =>
   `
 ${data.description}
 
@@ -50,8 +53,17 @@ ${dataWrapper(data.globalConfig, 'globalConfig')}
 `;
 
 const mergeProjectAPIs = async () => {
-  const iduxFolders = await resovlePkgFloder(['@idux/cdk', '@idux/components', '@idux/pro']);
-  iduxFolders.forEach(async apiFile => apiFile && mergeObject(apiMap, await getJSON(apiFile)));
+  const iduxFolders = await resolvePkgFolder([
+    '@idux/cdk',
+    '@idux/components',
+    '@idux/pro',
+    '@idux-vue2/cdk',
+    '@idux-vue2/components',
+    '@idux-vue2/pro',
+  ]);
+  return Promise.all(
+    iduxFolders.filter(apiFile => apiFile).map(async apiFile => mergeObject(apiMap, await getJSON(apiFile!))),
+  );
 };
 
 const mergeCustomAPIs = async () => {
