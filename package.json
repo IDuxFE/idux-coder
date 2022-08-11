@@ -2,13 +2,13 @@
   "name": "idux-coder",
   "displayName": "iDuxCoder",
   "description": "💻 A IDE Extension for iDux",
-  "version": "0.0.1",
+  "version": "0.0.0",
   "license": "MIT",
-  "publisher": "",
+  "publisher": "IDuxFE",
   "author": {
-    "name": "",
-    "email": "",
-    "url": ""
+    "name": "IDuxFE",
+    "email": "idux.feteam@gmail.com",
+    "url": "https://github.com/IDuxFE"
   },
   "icon": "assets/logo.png",
   "homepage": "https://github.com/IDuxFE/idux-coder/blob/main/README.md",
@@ -34,9 +34,10 @@
     "vscode": "^1.69.0"
   },
   "activationEvents": [
-    "onCommand:vscode-hover-docs.helloWorld",
     "onLanguage:vue",
-    "onLanguage:html"
+    "onLanguage:html",
+    "onLanguage:typescriptreact",
+    "onLanguage:javascriptreact"
   ],
   "main": "./dist/extension.js",
   "contributes": {
