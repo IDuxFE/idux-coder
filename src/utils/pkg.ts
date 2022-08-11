@@ -1,4 +1,4 @@
-import { getConfiguration } from './config';
+import { getConfiguration } from '../data/config';
 import { join } from 'path';
 import { workspace, window } from 'vscode';
 import { access } from 'fs/promises';

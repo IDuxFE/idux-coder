@@ -1,6 +1,7 @@
 import { readFile } from 'fs/promises';
 import { MarkdownString, Uri } from 'vscode';
-import { getConfiguration, resolvePkgFolder } from '../utils';
+import { resolvePkgFolder } from '../utils';
+import { getConfiguration } from './config';
 const mergeObject = require('lodash.merge');
 const forIn = require('lodash.forin');
 
