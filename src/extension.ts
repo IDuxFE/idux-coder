@@ -1,6 +1,7 @@
 import { initAPIMap } from './data/index';
 import { HoverProvider } from './providers/hover-provider';
 import * as vscode from 'vscode';
+import { configurationRefresh } from './data/config';
 
 export const extensionId = 'idux-coder';
 
@@ -28,10 +29,26 @@ export function activate(context: vscode.ExtensionContext) {
 
   const hoverRegistration = vscode.languages.registerHoverProvider(languageSelector, new HoverProvider());
 
+  const configurationRegistration = vscode.workspace.onDidChangeConfiguration(e => {
+    if (e.affectsConfiguration('IDuxCoder.ComponentPrefix') || e.affectsConfiguration('IDuxCoder.Language')) {
+      console.log('refresh');
+
+      configurationRefresh();
+    } else if (
+      e.affectsConfiguration('IDuxCoder.BaseURL') ||
+      e.affectsConfiguration('IDuxCoder.CustomAPIs') ||
+      e.affectsConfiguration('IDuxCoder.PackageLocation')
+    ) {
+      console.log('re');
+
+      initAPIMap();
+    }
+  });
+
   initAPIMap();
 
   // TODO: feat:watch node_modules change when install or update package
-  context.subscriptions.push(hoverRegistration);
+  context.subscriptions.push(hoverRegistration, configurationRegistration);
 }
 
 // this method is called when your extension is deactivated

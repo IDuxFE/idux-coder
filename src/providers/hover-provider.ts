@@ -1,6 +1,7 @@
-import { findTagName, findProp, configuration } from '../utils';
+import { findTagName, findProp } from '../utils';
 import * as vscode from 'vscode';
 import { apiMap } from '../data';
+import { preference } from '../data/config';
 const camelCase = require('lodash.camelcase');
 const toUpper = require('lodash.toupper');
 
@@ -23,7 +24,7 @@ export class HoverProvider implements vscode.HoverProvider {
 
     if (hoveredWord.length < 100 && !invalidBlock.test(tagName)) {
       // TODO: fix pref problem
-      const { prefix, lang } = configuration();
+      const { prefix, lang } = preference;
 
       const propName = findProp(document, position, hoveredWord);
       const hoverType = hoveredWord.indexOf('#') >= 0 ? 'slots' : 'props';
