@@ -1,4 +1,8 @@
-# 1.0.0 (2022-08-12)
+## [1.0.1](https://github.com/IDuxFE/idux-coder/compare/v1.0.0...v1.0.1) (2022-08-12)
+
+
+
+# [1.0.0](https://github.com/IDuxFE/idux-coder/compare/01d361256cb139c0f404cd049ecb59eba0f19f0c...v1.0.0) (2022-08-12)
 
 
 ### Features
