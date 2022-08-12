@@ -85,7 +85,7 @@
     "prepare": "husky install",
     "package": "vsce package --no-yarn",
     "vscode:prepublish": "npm run esbuild-base -- --minify",
-    "publish": "vsce publish",
+    "publish": "vsce publish --no-yarn",
     "lint": "eslint src --ext ts --fix",
     "release": "release-it",
     "changelog:last": "conventional-changelog -p angular -r 2",
