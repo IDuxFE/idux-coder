@@ -16,12 +16,12 @@ jobs:
         run: git fetch --tags -f || true
 
       - name: Install Dependencies
-        run: npm install
+        run: yarn install
 
       - name: Generate Changelog
         id: generate_changelog
         run: |
-          changelog=$(npm run changelog:last --silent)
+          changelog=$(yarn run changelog:last --silent)
           changelog="${changelog//$'\n'/'%0A'}"
           changelog="${changelog//$'\r'/'%0D'}"
           echo -e "set-output name=changelog::${changelog-<empty>}\n"
@@ -29,7 +29,7 @@ jobs:
       - name: Package extension
         uses: lannonbr/vsce-action@master
         with:
-          args: 'package -o idux-coder.vsix'
+          args: 'package -o idux-coder.vsix '
 
       - name: Create Release
         id: create_release
