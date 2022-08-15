@@ -8,3 +8,7 @@ node_modules
 *.log
 *-lock.json
 *-lock.yaml
+.gradle
+.idea
+.qodana
+build

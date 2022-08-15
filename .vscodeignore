@@ -18,3 +18,9 @@ commitlint.config.js
 .prettierignore
 *.log
 .release-it.yml
+gradle
+.gradle
+.run
+.github
+*gradle*
+build

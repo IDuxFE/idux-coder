@@ -1,4 +1,4 @@
-import { initAPIMap } from './data/index';
+import { initAPIMap } from './data';
 import { HoverProvider } from './providers/hover-provider';
 import * as vscode from 'vscode';
 import { configurationRefresh } from './data/config';
@@ -31,16 +31,12 @@ export function activate(context: vscode.ExtensionContext) {
 
   const configurationRegistration = vscode.workspace.onDidChangeConfiguration(e => {
     if (e.affectsConfiguration('IDuxCoder.ComponentPrefix') || e.affectsConfiguration('IDuxCoder.Language')) {
-      console.log('refresh');
-
       configurationRefresh();
     } else if (
       e.affectsConfiguration('IDuxCoder.BaseURL') ||
       e.affectsConfiguration('IDuxCoder.CustomAPIs') ||
       e.affectsConfiguration('IDuxCoder.PackageLocation')
     ) {
-      console.log('re');
-
       initAPIMap();
     }
   });
