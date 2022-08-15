@@ -1,0 +1,28 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <id>org.iduxfe.coder</id>
+    <name>IDuxCoder</name>
+    <vendor url="https://github.com/IDuxFE" email="idux.feteam@gmail.com">IDuxFE</vendor>
+
+
+    <depends>com.intellij.modules.platform</depends>
+    <depends>JavaScript</depends>
+    <depends>org.jetbrains.plugins.vue</depends>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <projectService serviceImplementation="org.iduxfe.coder.services.MyProjectService"/>
+
+        <lang.documentationProvider language="Vue"
+                                    implementationClass="org.iduxfe.coder.providers.DocsProvider"
+                                    order="first"/>
+        <applicationService
+                serviceImplementation="org.iduxfe.coder.ui.AppSettingsState"/>
+        <applicationConfigurable parentId="tools" instance="org.iduxfe.coder.ui.AppSettingsConfigurable"
+                                 id="org.iduxfe.coder.ui.AppSettingsConfigurable"/>
+    </extensions>
+
+    <applicationListeners>
+        <listener class="org.iduxfe.coder.services.MyProjectManagerListener"
+                  topic="com.intellij.openapi.project.ProjectManagerListener"/>
+    </applicationListeners>
+</idea-plugin>
