@@ -41,6 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
   });
 
+  configurationRefresh();
   initAPIMap();
 
   // TODO: feat:watch node_modules change when install or update package
