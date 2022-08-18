@@ -39,23 +39,23 @@ const exists = async (path: string) => {
 
 const getWorkspaceFolder = async () => {
   // If in a multifolder workspace, prompt user to select which one to traverse.
-  if (workspace.workspaceFolders!.length > 1) {
-    const selected = await window.showQuickPick(
-      workspace.workspaceFolders!.map(folder => ({
-        label: folder.name,
-        folder,
-      })),
-      {
-        placeHolder: 'Select workspace folder',
-      },
-    );
-
-    if (!selected) {
-      return;
-    }
-    return selected.folder.uri.fsPath;
+  if (workspace.workspaceFolders!.length <= 1) {
+    // Otherwise, use the first one
+    return workspace.workspaceFolders![0].uri.fsPath;
   }
 
-  // Otherwise, use the first one
-  return workspace.workspaceFolders![0].uri.fsPath;
+  const selected = await window.showQuickPick(
+    workspace.workspaceFolders!.map(folder => ({
+      label: folder.name,
+      folder,
+    })),
+    {
+      placeHolder: 'Select workspace folder',
+    },
+  );
+
+  if (!selected) {
+    return;
+  }
+  return selected.folder.uri.fsPath;
 };

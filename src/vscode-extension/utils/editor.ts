@@ -14,7 +14,7 @@ const tagProps = /\s*([^\s"'<>\/=]+)(?:\s*=\s*(?:"([^"]*)"+|'([^']*)'+|([^\s"'=<
  * @param propValue
  * @returns
  */
-export const findProp = (doc: TextDocument, pos: Position, propValue: string) => {
+export const findProp = (doc: TextDocument, pos: Position, propValue: string): [string, string] | undefined => {
   const lineText = doc.lineAt(pos.line).text.trim();
 
   let m;
@@ -30,7 +30,7 @@ export const findProp = (doc: TextDocument, pos: Position, propValue: string) =>
       return [m[1], m[2]];
     }
   }
-  return null;
+  return undefined;
 };
 
 /**
@@ -47,7 +47,7 @@ export const findProp = (doc: TextDocument, pos: Position, propValue: string) =>
  * @param pos Position
  * @returns
  */
-export const findTagName = (doc: TextDocument, pos: Position, hoveredWord: string) => {
+export const findTagName = (doc: TextDocument, pos: Position, hoveredWord: string): string | undefined => {
   let curLine = pos.line;
 
   if (hoveredWord.indexOf('#') >= 0) {
@@ -63,13 +63,13 @@ export const findTagName = (doc: TextDocument, pos: Position, hoveredWord: strin
       return lineText.match(label)![1];
     } else {
       if (tagStart.test(lineText) || tagEnd.test(lineText)) {
-        return null;
+        return undefined;
       }
 
       curLine--;
     }
   }
-  return null;
+  return undefined;
 };
 
 /**
@@ -84,7 +84,7 @@ export const findTagName = (doc: TextDocument, pos: Position, hoveredWord: strin
  * @param doc TextDocument
  * @param curLine
  */
-export const findSlotParent = (doc: TextDocument, curLine: number) => {
+export const findSlotParent = (doc: TextDocument, curLine: number): string | undefined => {
   curLine--; // avoid to traverse hover line
 
   let noChildTag = false; // flag <Ix \n\n\n />
@@ -116,5 +116,5 @@ export const findSlotParent = (doc: TextDocument, curLine: number) => {
       curLine--;
     }
   }
-  return null;
+  return undefined;
 };
