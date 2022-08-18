@@ -1,11 +1,11 @@
 import { initAPIMap } from './data';
 import { HoverProvider } from './providers/hover-provider';
 import * as vscode from 'vscode';
-import { configurationRefresh } from './data/config';
+import { refreshPreference } from './data/config';
 
 export const extensionId = 'idux-coder';
 
-const languageSelector = [
+const languageSelector: vscode.DocumentSelector = [
   {
     language: 'vue',
     scheme: '*',
@@ -23,6 +23,8 @@ const languageSelector = [
     scheme: '*',
   },
 ];
+const rebuildConfigs = ['IDuxCoder.BaseURL', 'IDuxCoder.CustomAPIs', 'IDuxCoder.PackageLocation'];
+const preferConfigs = ['IDuxCoder.ComponentPrefix', 'IDuxCoder.Language'];
 
 export function activate(context: vscode.ExtensionContext) {
   console.log(`Extension "${extensionId}" is now active!`);
@@ -30,18 +32,14 @@ export function activate(context: vscode.ExtensionContext) {
   const hoverRegistration = vscode.languages.registerHoverProvider(languageSelector, new HoverProvider());
 
   const configurationRegistration = vscode.workspace.onDidChangeConfiguration(e => {
-    if (e.affectsConfiguration('IDuxCoder.ComponentPrefix') || e.affectsConfiguration('IDuxCoder.Language')) {
-      configurationRefresh();
-    } else if (
-      e.affectsConfiguration('IDuxCoder.BaseURL') ||
-      e.affectsConfiguration('IDuxCoder.CustomAPIs') ||
-      e.affectsConfiguration('IDuxCoder.PackageLocation')
-    ) {
+    if (preferConfigs.find(item => e.affectsConfiguration(item))) {
+      refreshPreference();
+    } else if (rebuildConfigs.find(item => e.affectsConfiguration(item))) {
       initAPIMap();
     }
   });
 
-  configurationRefresh();
+  refreshPreference();
   initAPIMap();
 
   // TODO: feat:watch node_modules change when install or update package

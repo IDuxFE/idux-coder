@@ -8,7 +8,7 @@ export const preference: {
   lang: 'zh',
 };
 
-export const configurationRefresh = () => {
+export const refreshPreference = () => {
   const configuration = getConfiguration();
   preference.prefix = new RegExp(`^(${configuration.get<string>('ComponentPrefix', '')})`, 'i');
   preference.lang = configuration.get<string>('Language', '');

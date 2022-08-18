@@ -1,5 +1,5 @@
 import { readFile } from 'fs/promises';
-import { MarkdownString, Uri } from 'vscode';
+import { MarkdownString, Uri, window } from 'vscode';
 import { resolvePkgFolder } from '../utils';
 import { getConfiguration } from './config';
 const mergeObject = require('lodash.merge');
@@ -78,6 +78,7 @@ const getJSON = async (file: string): Promise<Object> => {
   try {
     return JSON.parse(await readFile(file, 'utf-8'));
   } catch {
+    window.showErrorMessage('iDuxCoder: custom apis parse failed');
     return {};
   }
 };
