@@ -2,7 +2,7 @@
 <idea-plugin>
     <id>org.iduxfe.coder</id>
     <name>IDuxCoder</name>
-    <vendor url="https://github.com/IDuxFE" email="idux.feteam@gmail.com">IDuxFE</vendor>
+    <vendor url="https://github.com/IDuxFE" email="idux.feteam@gmail.com">IDuxTeam</vendor>
 
 
     <depends>com.intellij.modules.platform</depends>
