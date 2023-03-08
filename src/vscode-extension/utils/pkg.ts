@@ -7,10 +7,13 @@ const nodeModulesName = 'node_modules';
 
 export const resolvePkgFolder = async (pkgName: string[]) => {
   let nodeModulesPath = getConfiguration().get<string>('PackageLocation')!;
+  const workspacePath =await getWorkspaceFolder();
+
   if (nodeModulesPath === '') {
-    nodeModulesPath = join((await getWorkspaceFolder())!, nodeModulesName);
-    getConfiguration().update('PackageLocation', nodeModulesPath, false);
+    getConfiguration().update('PackageLocation', nodeModulesName, false);
   }
+
+  nodeModulesPath = join(workspacePath!, nodeModulesPath);
 
   if (await exists(nodeModulesPath)) {
     return Promise.all(
